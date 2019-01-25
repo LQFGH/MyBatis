@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.EmployeeMapper">
+	
+<!-- 	Map<Integer, Employee> getMapByLastName(); -->
+	<select id="getMapByLastName" resultType="map">
+		select * from tbl_employee where last_name like #{lastName}
+	</select>
+	
+<!-- 	List<Map<Integer, Employee>> getListMapById(Integer id); -->
+	<select id="getListMapLikeLastName" resultType="map">
+		select * from tbl_employee where last_name like #{lastName}
+	</select>
+	
+<!-- 	Map<String, Object> getMapById(Integer id); -->
+	<select id="getMapById" resultType="map">
+		select * from tbl_employee where id = #{id}
+	</select>
+	
+<!-- 	List<Employee> getAllEmp(); -->
+	<select id="getAllEmp" resultType="com.mybatis.bean.Employee">
+		select * from tbl_employee
+	</select>
+	
+<!-- 	Employee selectByMap(Map<String, Object> map); -->
+	<select id="selectByMap" resultType="com.mybatis.bean.Employee">
+		select * from tbl_employee where id = #{id} and last_name = #{lastName}
+	</select>
+	 
+<!-- 	Employee selectByIdAndName(Integer id,String userName); -->
+	<select id="selectByIdAndName" resultType="com.mybatis.bean.Employee">
+		select * from tbl_employee where id = #{id} and last_name = #{lastName}
+	</select>
+	
+	<select id="selectEmployeeById" resultType="com.mybatis.bean.Employee" databaseId="mysql">
+		select * from tbl_employee where id = #{id}
+	</select>
+
+	<select id="selectEmployeeById" resultType="com.mybatis.bean.Employee"  databaseId="oracle">
+		select employee_id id,last_name lastName,email email from employees where employee_id = #{id}
+	</select>
+
+<!-- 	Employee addEmp(Employee employee); -->
+	<insert id="addEmp" keyProperty="id" useGeneratedKeys="true" databaseId="mysql">
+		insert into tbl_employee(last_name,gender,email) values(#{lastName},#{gender},#{email})
+	</insert>
+	
+	<insert id="addEmp" databaseId="oracle" >
+		<selectKey keyProperty="id" resultType="Integer" order="AFTER">
+			select emp_seq.currval from dual
+		</selectKey>
+		insert into emp(id,last_name,email) values(emp_seq.nextval,#{lastName},#{email})
+	</insert>
+	
+<!-- 	boolean deleteEmp(Integer id); -->
+	<delete id="deleteEmp">
+		delete from tbl_employee where id = #{id}
+	</delete>
+
+<!-- 	int updateEmp(Employee employee); --> 
+	<update id="updateEmp">
+		update tbl_employee set last_name = #{lastName},gender = #{gender},email = #{email} where id = #{id}
+	</update>
+
+</mapper>
